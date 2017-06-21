@@ -17,6 +17,16 @@ class Modulo(models.Model):
     def __str__(self):
         return self.nombre
     
+class Tema(models.Model):
+    nombre          =       models.CharField(max_length=60)
+    numero          =       models.IntegerField()
+    modulo          =       models.ForeignKey(Modulo)
+    adicional       =       models.CharField(max_length=4096)
+    class Meta:
+        ordering = ["modulo__nombre", "numero"]
+    def __str__(self):
+        cad         =       "Tema " + str(self.numero) + " - " + self.nombre + " ("+str(self.modulo)+")"
+        return cad
 class AlumnoCursaModulo(models.Model):
     alumno          =       models.ForeignKey(Alumno)
     modulo          =       models.ForeignKey(Modulo)
@@ -26,9 +36,9 @@ class AlumnoCursaModulo(models.Model):
     
 class Examen(models.Model):
     nombre      =           models.CharField(max_length=90)
-    modulo      =           models.ForeignKey(Modulo)
+    tema        =           models.ForeignKey(Tema)
     def __str__(self):
-        return str(self.nombre) + " - " + str(self.modulo)
+        return str(self.nombre) + " - " + str(self.tema)
     class Meta:
         verbose_name_plural = "Examenes"
     
